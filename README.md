@@ -69,7 +69,7 @@ want to fix it, I recommend you start by taking a look at the neighbor lists.
 You can also wait until I have the need for a more efficient code and implement
 changes, but that may never actually happen!
 
-## Usage (aka codumentation)
+## Usage (aka documentation)
 
 Using **carve.f90** is very easy. It takes VASP structure files (POSCAR, CONTCAR) as
 input and produces either an XYZ or a POSCAR file. You can use ASE to convert to
@@ -91,8 +91,8 @@ An example command is:
 
 ### Fixing atoms
 
-If outputting with VASP format, you can also choose to free some of the atoms. In that case use
-either `format="fix_in"`, if you can to fix the atoms within an inner cutoff sphere, or
+If outputting with VASP format, you can also choose to freeze some of the atoms. In that case use
+either `format="fix_in"`, if you want to fix the atoms within an inner cutoff sphere, or
 `format="fix_out"`, if you want to fix the atoms within an outer cutoff sphere. The command
 line argument `rfix` determines where the boundary of the sphere lies:
 
