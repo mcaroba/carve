@@ -5,7 +5,7 @@
 **carve.f90** (this code) is Copyright (c) 2013-2020 of **Miguel A. Caro** and was written
 during his employment at Aalto University.
 
-The code is released under the Creative Commons Attribution Share-alike International
+The code is released under the Creative Commons Attribution Share-Alike International
 License (check LICENSE.md for license information). If you want to use the code under
 different terms than those covered by the license, or have other questions, bug reports,
 etc., you can contact Miguel Caro:
@@ -30,21 +30,18 @@ Phys. Rev. B **102**, 174201 (2020).
 
 ## Installation
 
-Make a directory to install **carve.f90**:
-
-    mkdir ~/carve; cd ~/carve
-
 Clone the repo:
 
     git clone https://github.com/mcaroba/carve.git
 
 Build the binary:
 
+    cd carve
     gfortran -o carve.ex carve.f90
 
 Add the directory to your path:
 
-    echo "export PATH:~/carve:$PATH" >> ~/.bashrc
+    echo "export PATH=$(pwd):\$PATH" >> ~/.bashrc
     source ~/.bashrc
 
 ## What does carve.f90 do

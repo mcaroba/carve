@@ -4,7 +4,7 @@
 ! and was written during his employment at Aalto University.
 !
 ! The code is released under the Creative Commons Attribution
-! Share-alike International License:
+! Share-Alike International License:
 !
 ! https://creativecommons.org/licenses/by-sa/4.0/
 !
