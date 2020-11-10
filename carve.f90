@@ -212,24 +212,24 @@ program carve
   integer, allocatable :: atom_number(:), atom_coordination(:), atom_neighbors(:,:)
   character*2 :: cjunk
   character*1 :: mode
-  real*8 :: nn_cutoff, mass_sp2, mass_sp3, expectation, occurrence, thickness
+  real*8 :: nn_cutoff, mass_sp2, mass_sp3, expectation, occurrence, thickness = 3.d0
   integer :: N_sp2, N_sp3, N_chains4
   integer :: l, npoints, natoms_in_slice
   integer, allocatable :: qi(:)
   real*8, allocatable :: qz(:,:)
   real*8 :: v1(3), v2(3), v3(3), pi, z_step, sum1, sum2, zmax, vector(3)
-  real*8 :: dHC
+  real*8 :: dHC = 0.9d0
   real*8 :: pos(1:3), d, dmin
   integer :: imin, jmin, kmin
-  integer :: center_atom, ia2, ib2, ic2
+  integer :: center_atom = 1, ia2, ib2, ic2
   real*8 :: r, r2
-  real*8 :: dHH_min, pos2(1:3)
+  real*8 :: dHH_min = 1.1d0, pos2(1:3)
   real*8, allocatable :: new_H_pos(:,:), new_H_pos_temp(:,:)
   integer :: n_new_H, n_keep
   logical :: too_close, keep_running, fix_atoms
   logical, allocatable :: remove_atom(:)
   real*8 :: dist(1:3), dist2(1:3), fix_in, fix_out, shift(1:3)
-  character*64 :: output_format = "xyz"
+  character*64 :: output_format = "xyz", argument
 ! This is for VASP output. At the moment we handle structures with C, O and H, in that order
   integer :: n_vasp(1:3) = 0
   real*8 :: x_max, x_min, y_max, y_min, z_max, z_min, nn_cutoff_max = 1.9d0
@@ -241,7 +241,31 @@ program carve
 !  nn_cutoff = 1.9d0
 
 
-  read(*,*, iostat=error) thickness, center_atom, dHC, dHH_min, file, output_format, fix_in
+!  read(*,*, iostat=error) thickness, center_atom, dHC, dHH_min, file, output_format, fix_in
+
+  do i = 1, 7
+    call getarg(i, argument)
+    if( argument(1:5) == "rcut=" )then
+      read(argument(6:64), *) thickness
+    else if( argument(1:13) == "central_atom=" )then
+      read(argument(14:64), *) center_atom
+    else if( argument(1:4) == "dHC=" )then
+      read(argument(5:64), *) dHC
+    else if( argument(1:8) == "dHH_min=" )then
+      read(argument(9:64), *) dHH_min
+    else if( argument(1:11) == "atoms_file=" )then
+      read(argument(12:64), *) file
+    else if( argument(1:7) == "format=" )then
+      read(argument(8:64), *) output_format
+    else if( argument(1:5) == "rfix=" )then
+      read(argument(6:64), *) fix_in
+    else if( argument == "" )then
+      continue
+    else
+      write(0,*) "ERROR: I don't understand command line argument ", argument
+      stop
+    end if
+  end do
 
   shift(1:3) = (/ 3.d0+thickness, 3.d0+thickness, 3.d0+thickness /)
 
@@ -260,17 +284,6 @@ program carve
     fix_in = 1.d10
   end if
 
-! If thickness option is not given, we reset to default.
-  if(thickness == 0)then
-    write(0,*) "WARNING: Thickness for slice not specified, the default value of 3.0 A will be used."
-    thickness = 3.d0
-  end if
-
-! If dHC option is not given, we reset to default.
-  if(dHC == 0.)then
-    write(0,*) "WARNING: H-C distance not specified, the default value of 0.9 A will be used."
-    dHC = 0.9d0
-  end if
 
   open(unit=10, file=file, status='old')
 
