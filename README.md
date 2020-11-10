@@ -18,12 +18,12 @@ The official repository of this code is on [Github](https://github.com/mcaroba/c
 The proper way of giving attribution when using the code is to cite the following paper
 (citation info will be updated when a better reference is available):
 
-    M.A. Caro, R. Zoubkoff, O. Lopez-Acevedo and T. Laurila
+M.A. Caro, R. Zoubkoff, O. Lopez-Acevedo and T. Laurila
 
-    *Atomic and electronic structure of tetrahedral amorphous carbon
-    surfaces from density functional theory: Properties and simulation strategies*
+*Atomic and electronic structure of tetrahedral amorphous carbon
+surfaces from density functional theory: Properties and simulation strategies*
 
-    Carbon **77**, 1168 (2014). [DOI: check README.md for license information)](https://doi.org/10.1016/j.carbon.2014.06.060)
+Carbon **77**, 1168 (2014). [DOI: 10.1016/j.carbon.2014.06.060](https://doi.org/10.1016/j.carbon.2014.06.060)
 
 ## Installation
 
