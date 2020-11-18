@@ -20,7 +20,7 @@
 ! https://github.com/mcaroba/carve
 !
 ! The proper way of giving attribution when using the code is to cite
-! the following paper (citation info will be updated when a better
+! the following papers (citation info will be updated when a better
 ! reference is available):
 !
 ! M.A. Caro, R. Zoubkoff, O. Lopez-Acevedo and T. Laurila
@@ -30,6 +30,11 @@
 ! Carbon 77, 1168 (2014)
 ! https://doi.org/10.1016/j.carbon.2014.06.060
 !
+! M.A. Caro, G. Csányi, T. Laurila and V.L. Deringer
+! "Machine learning driven simulated deposition of carbon films: From
+! low-density to diamondlike amorphous carbon"
+! Phys. Rev. B 102, 174201 (2020)
+! https://doi.org/10.1103/PhysRevB.102.174201.
 !----------------------------------------------------------------------!
 
 
@@ -195,7 +200,7 @@ program carve
 
 ! ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION
 !
-! ATTENTION: This code only works for orthorhombic cells
+! ATTENTION: This code only works for orthorhombic cells <- I'm actually not sure if this is true
 !
 ! ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION ATTENTION
 
@@ -226,7 +231,7 @@ program carve
   real*8 :: dHH_min = 1.1d0, pos2(1:3)
   real*8, allocatable :: new_H_pos(:,:), new_H_pos_temp(:,:)
   integer :: n_new_H, n_keep
-  logical :: too_close, keep_running, fix_atoms
+  logical :: too_close, keep_running, fix_atoms, override_ortho = .false.
   logical, allocatable :: remove_atom(:)
   real*8 :: dist(1:3), dist2(1:3), fix_in, fix_out, shift(1:3)
   character*64 :: output_format = "xyz", argument
@@ -243,7 +248,7 @@ program carve
 
 !  read(*,*, iostat=error) thickness, center_atom, dHC, dHH_min, file, output_format, fix_in
 
-  do i = 1, 7
+  do i = 1, 8
     call getarg(i, argument)
     if( argument(1:5) == "rcut=" )then
       read(argument(6:64), *) thickness
@@ -259,6 +264,8 @@ program carve
       read(argument(8:64), *) output_format
     else if( argument(1:5) == "rfix=" )then
       read(argument(6:64), *) fix_in
+    else if( argument(1:5) == "override_ortho" )then
+      override_ortho = .true.
     else if( argument == "" )then
       continue
     else
@@ -303,8 +310,8 @@ program carve
   b = f*b
   c = f*c
 
-  if( (a(2) /= 0.d0) .or. (a(3) /= 0.d0) .or. (b(1) /= 0.d0) .or. (b(3) /= 0.d0) .or. &
-      (c(1) /= 0.d0) .or. (c(2) /= 0.d0) )then
+  if( ( (a(2) /= 0.d0) .or. (a(3) /= 0.d0) .or. (b(1) /= 0.d0) .or. (b(3) /= 0.d0) .or. &
+      (c(1) /= 0.d0) .or. (c(2) /= 0.d0) ) .and. ( .not. override_ortho ) )then
     write(0, *) "ERROR: only orthorhombic unit cells can currently be processed!"
     stop
   end if
