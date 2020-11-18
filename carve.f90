@@ -264,7 +264,7 @@ program carve
       read(argument(8:64), *) output_format
     else if( argument(1:5) == "rfix=" )then
       read(argument(6:64), *) fix_in
-    else if( argument(1:5) == "override_ortho" )then
+    else if( argument(1:14) == "override_ortho" )then
       override_ortho = .true.
     else if( argument == "" )then
       continue
